@@ -1,0 +1,32 @@
+{
+  "name": "sea-koa-cli",
+  "version": "1.0.0",
+  "description": "快速生成 koa 应用",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xinghaiyang1994/sea-koa-cli.git"
+  },
+  "keywords": [
+    "sea",
+    "koa"
+  ],
+  "bin": {
+    "sea-koa": "./bin/sea-koa.js"
+  },
+  "author": "sea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xinghaiyang1994/sea-koa-cli/issues"
+  },
+  "homepage": "https://github.com/xinghaiyang1994/sea-koa-cli#readme",
+  "dependencies": {
+    "commander": "^3.0.1",
+    "download-git-repo": "^2.0.0",
+    "inquirer": "^7.0.0",
+    "ora": "^4.0.0"
+  }
+}
