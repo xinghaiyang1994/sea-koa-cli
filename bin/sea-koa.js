@@ -2,7 +2,7 @@
 const program = require('commander')
 
 program
-  .version('1.0.0')
+  .version(require('../package').version)
   .option('-v, --version')
 
 // 初始化 

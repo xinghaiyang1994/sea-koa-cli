@@ -1,6 +1,6 @@
 {
   "name": "sea-koa-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "快速生成 koa 应用",
   "main": "index.js",
   "scripts": {
