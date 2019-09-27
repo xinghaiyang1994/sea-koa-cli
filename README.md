@@ -1,4 +1,7 @@
 # sea-koa-cli
+![npm](https://img.shields.io/npm/v/sea-koa-cli)
+![npm](https://img.shields.io/npm/dw/sea-koa-cli)
+
 快速生成 koa 应用
 
 应用来源为 https://github.com/xinghaiyang1994/sea-koa 
