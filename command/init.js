@@ -46,27 +46,27 @@ module.exports = async function (dir = '.', cmd) {
   const tplLoading = ora('正在拉取模板...').start()
   await new Promise(function (resolve, reject) {
     download(`${github}#${type}`, projectDir, err => {
-      err ? reject() : resolve()
+      err ? reject(err) : resolve()
     })
   }).then(() => {
     tplLoading.succeed('拉取成功')
-  }).catch(() => {
-    tplLoading.fail('拉取失败!')
+  }).catch(err => {
+    tplLoading.fail(`拉取失败:${err.message}!`)
   })  
 
   // 设置 .gitignore 中隐藏 config 目录
   const cdShell = `cd ${path.join(dir, name)}`
   if (isIgnoreConfig) {
     const ignoreConfigLoading = ora('正在设置 .gitignore 中隐藏 config 目录...').start()
-    const cdIgnoreConfigShell = `${cdShell} && rm -f .gitignore && cp ${path.join(__dirname, '../file/.gitignore')} .`
+    const cdIgnoreConfigShell = `${cdShell} && rm -f .gitignore && cp ${path.join(__dirname, '../file/gitignore')} .gitignore`
     await new Promise(function (resolve, reject) {
       childProcess.exec(cdIgnoreConfigShell, err => {
-        err ? reject() : resolve()
+        err ? reject(err) : resolve()
       })
     }).then(() => {
       ignoreConfigLoading.succeed('设置 .gitignore 中隐藏 config 目录成功')
-    }).catch(() => {
-      ignoreConfigLoading.fail('设置 .gitignore 中隐藏 config 目录失败!')
+    }).catch(err => {
+      ignoreConfigLoading.fail(`设置 .gitignore 中隐藏 config 目录失败:${err.message}!`)
     })  
   }
 
@@ -76,13 +76,15 @@ module.exports = async function (dir = '.', cmd) {
     const shellLoading = ora('正在安装依赖...').start()
     await new Promise(function (resolve, reject) {
       childProcess.exec(cdInstallShell, err => {
-        err ? reject() : resolve()
+        err ? reject(err) : resolve()
       })
     }).then(() => {
       shellLoading.succeed('安装依赖成功')
-    }).catch(() => {
-      shellLoading.fail('安装依赖失败!')
+    }).catch(err => {
+      shellLoading.fail(`安装依赖失败:${err.message}!`)
     })  
   }
   console.log(`\n${chalk.bold('请手动执行:')} ${chalk.cyan(isAuto ? cdShell : cdInstallShell)}\n`)
+
+  process.exit()
 }
