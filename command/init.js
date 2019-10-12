@@ -28,12 +28,18 @@ module.exports = async function (dir = '.', cmd) {
     },
     {
       type: 'confirm',
-      message: '是否自动安装依赖?',
+      message: `是否在 .gitignore 中隐藏 config 目录?${chalk.blue('(默认Y)')}`,
+      name: 'isIgnoreConfig',
+      default: true
+    },
+    {
+      type: 'confirm',
+      message: `是否自动安装依赖?${chalk.blue('(默认Y)')}`,
       name: 'isAuto',
       default: true
     }
   ])
-  const { name, type, isAuto } = answers
+  const { name, type, isAuto, isIgnoreConfig } = answers
   const projectDir = path.resolve(dir, name)    // 项目目录
 
   // 下载模板
@@ -48,8 +54,23 @@ module.exports = async function (dir = '.', cmd) {
     tplLoading.fail('拉取失败!')
   })  
 
-  // 自动安装依赖
+  // 设置 .gitignore 中隐藏 config 目录
   const cdShell = `cd ${path.join(dir, name)}`
+  if (isIgnoreConfig) {
+    const ignoreConfigLoading = ora('正在设置 .gitignore 中隐藏 config 目录...').start()
+    const cdIgnoreConfigShell = `${cdShell} && rm -f .gitignore && cp ${path.join(__dirname, '../file/.gitignore')} .`
+    await new Promise(function (resolve, reject) {
+      childProcess.exec(cdIgnoreConfigShell, err => {
+        err ? reject() : resolve()
+      })
+    }).then(() => {
+      ignoreConfigLoading.succeed('设置 .gitignore 中隐藏 config 目录成功')
+    }).catch(() => {
+      ignoreConfigLoading.fail('设置 .gitignore 中隐藏 config 目录失败!')
+    })  
+  }
+
+  // 自动安装依赖
   const cdInstallShell = `${cdShell} && npm i`
   if (isAuto) {
     const shellLoading = ora('正在安装依赖...').start()
